@@ -8,6 +8,8 @@ This is a repo for looking how to efficiently perform global LEC analysis.
 
 - australia.ipynb shows how to use the same code to perform an LEC analysis on the scale of Australia, using parallel map functions for speedup.
 
+- ugs.py has all the code for doing the slightly modified Dijkstra's algorithm
+
 ## Data origins
 
 The data was taken from the escape models notebooks. 
