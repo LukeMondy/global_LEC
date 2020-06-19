@@ -1,7 +1,9 @@
 import operator, math
 import numpy as np
 from queue import PriorityQueue
+import functools
 
+@functools.lru_cache(maxsize=1000000)
 def distance(mesh, current, _next):
     # from https://stackoverflow.com/a/1401828
     if current == _next:

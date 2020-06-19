@@ -19,7 +19,7 @@ The data was taken from the escape models notebooks.
 Checkout this repo, and `cd` into it. Then run:
 
 ```
-docker run -it -w /host -v $PWD:/host geodels/escape-docker
+docker run -d -v $PWD:/live/share -p 127.0.0.1:8888:8888 geodels/escape-docker:python3
 ```
 
 and then connect to the running JuPyter Notebook server.
