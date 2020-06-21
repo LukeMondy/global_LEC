@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd">
+<Xdmf Version="2.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+ <Domain>
+    <Grid GridType="Collection" CollectionType="Temporal">
+      <xi:include href="xmf/eSCAPE0.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE1.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE2.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE3.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE4.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE5.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE6.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE7.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE8.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE9.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE10.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE11.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE12.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE13.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE14.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE15.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE16.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE17.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE18.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE19.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+      <xi:include href="xmf/eSCAPE20.xmf" xpointer="xpointer(//Xdmf/Domain/Grid)"/>
+    </Grid>
+ </Domain>
+</Xdmf>
