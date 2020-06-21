@@ -2,8 +2,9 @@ import operator, math
 import numpy as np
 from queue import PriorityQueue
 import functools
+import os
 
-@functools.lru_cache(maxsize=1048576)
+@functools.lru_cache(maxsize=32768)
 def distance(mesh, current, _next):
     # from https://stackoverflow.com/a/1401828
     if current == _next:
@@ -53,7 +54,40 @@ def cost_search(mesh, start, travel_cost_function, max_distance=100000):
         
     return came_from, cost_so_far
 
-            
+"""
+from heapq import *
+def cost_search(mesh, start, travel_cost_function, max_distance=100000):
+    frontier = []                  # The priority queue means that we can find the least cost path to continue
+    heappush(frontier, (start, 0)) # from, along any path, meaning the resulting paths should always be the least-cost
+                                   # path to get to that point.
+    came_from = {}
+    cost_so_far = {}
+    dist_so_far = {}
+    came_from[start] = None
+    cost_so_far[start] = 0
+    dist_so_far[start] = 0
+    while frontier:
+        current, priority = heappop(frontier)
+
+        for _next in graph_neighbours(mesh, current):
+            # Calculate the cost of going to this new point.
+            new_cost = cost_so_far[current] + travel_cost_function(mesh, current, _next)
+            # Calculate the eulerian distance to this new point.
+            new_dist = dist_so_far[current] + distance(mesh, current, _next)
+
+            # The max_distance check tells the algorithm to stop once we start getting too far away from the starting point.
+            if (_next not in cost_so_far or new_cost < cost_so_far[_next]) and new_dist < max_distance:
+                cost_so_far[_next] = new_cost
+                dist_so_far[_next] = new_dist
+                priority = new_cost
+                heappush(frontier, (_next, priority))
+                came_from[_next] = current
+
+
+        
+    return came_from, cost_so_far
+"""
+
 def get_total_cost_for_point(start, mesh, travel_cost_function, max_distance=100000):
     came_from, cost_so_far = cost_search(mesh, start, travel_cost_function, max_distance)
     
@@ -73,4 +107,6 @@ def get_from_cell(cell, mesh, travel_cost_function, max_distance=100000):
 
 def get_from_point(point, mesh, travel_cost_function, max_distance=100000):
     # Return a tuple of (the point id, it's cost)
-    return (point, get_total_cost_for_point(point, mesh, travel_cost_function, max_distance))
+    total_cost = get_total_cost_for_point(point, mesh, travel_cost_function, max_distance)
+    #print(os.getpid(), distance.cache_info())
+    return (point, total_cost)
