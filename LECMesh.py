@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import numpy as np
-from multiprocessing import Pool
 import time
 from functools import lru_cache
 from queue import PriorityQueue
@@ -86,7 +85,7 @@ class LECMesh(object):
                 # Calculate the eulerian distance to this new point.
                 new_dist = dist_so_far[current] + self.dist_func(current, _next)
 
-                # The max_distance check tells the algorithm to stop once we start getting too far away from the starting point.
+                # The max_fuel check tells the algorithm to stop once a path has used up all its fuel.
                 if (_next not in cost_so_far or new_cost < cost_so_far[_next]) and new_cost <= self.max_fuel:
                     cost_so_far[_next] = new_cost
                     dist_so_far[_next] = new_dist
