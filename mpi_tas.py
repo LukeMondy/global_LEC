@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# run me with: mpiexec -n 4 python3 mpi_global.py
+# run me with: mpiexec -n 4 python3 mpi_tas.py
 
 import meshio
 import numpy as np
@@ -16,9 +16,11 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 
 
-infile = "earth/data/globe.vtk"
-outfile = "costed_globe_new.vtk"
+infile = "australia/data/TAS.vtk"
+outfile = "outputs/costed_tas_parallel.vtk"
 mesh = meshio.read(infile)
+
+max_fuel = 2500 # A smaller value means visiting far fewer nodes, so it speeds things up a lot
 
 points_above_sealevel = np.nonzero(mesh.point_data['Z'] >= 0)[0]
 if rank == 0:
@@ -49,10 +51,10 @@ def process_points_with_feedback(points):
     """
     all_costs = []
     start = 0
-    inc = 100
+    inc = 50
     stop = inc
     
-    while start < len(points):
+    while start < points.shape[0]:
         start_time = time.time()
         
         # the real work is being done here
