@@ -20,6 +20,8 @@ infile = "earth/data/globe.vtk"
 outfile = "costed_globe_new.vtk"
 mesh = meshio.read(infile)
 
+max_fuel = 2500
+
 points_above_sealevel = np.nonzero(mesh.point_data['Z'] >= 0)[0]
 if rank == 0:
     print("Total starting points available: ", points_above_sealevel.shape[0], flush=True)
