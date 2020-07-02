@@ -54,7 +54,7 @@ def process_points_with_feedback(points):
     inc = 100
     stop = inc
     
-    while start < len(points):
+    while start < points.shape[0]:
         start_time = time.time()
         
         # the real work is being done here
