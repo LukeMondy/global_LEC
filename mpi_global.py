@@ -17,7 +17,7 @@ rank = comm.Get_rank()
 
 
 infile = "earth/data/globe.vtk"
-outfile = "costed_globe_new.vtk"
+outfile = "outputs/costed_globe.vtk"
 mesh = meshio.read(infile)
 
 max_fuel = 2500
