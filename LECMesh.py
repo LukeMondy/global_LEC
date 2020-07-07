@@ -50,7 +50,7 @@ class LECMesh(object):
 
     def graph_neighbours(self, current):
         # Get all the other points from the cells that have the current point in them.
-        points = np.unique(self.mesh.cells['triangle'][np.where(self.mesh.cells['triangle']==current)[0]])
+        points = np.unique(self.mesh.cells_dict['triangle'][np.where(self.mesh.cells_dict['triangle']==current)[0]])
         # remove the current point from these results:
         points = points[points != current]
         
