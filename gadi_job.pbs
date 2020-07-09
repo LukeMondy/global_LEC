@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -P q97
+#PBS -q normal
+#PBS -l walltime=02:00:00
+#PBS -l mem=192GB
+#PBS -l jobfs=1GB
+#PBS -l ncpus=24
+#PBS -lstorage=scratch/q97
+## The job will be executed from current working directory instead of home.
+#PBS -l wd
+
+set -x
+
+module purge
+module load pbs openmpi/4.0.2 python3/3.7.4
+
+export PYTHONPATH="/scratch/q97/lsm562/pythpacks/lib/python3.7/site-packages:$PYTHONPATH"
+mpiexec python3 -m mpi4py.futures mpi_global.py > my_global_output.out
