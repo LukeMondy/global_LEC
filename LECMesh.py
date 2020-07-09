@@ -5,7 +5,7 @@ import numpy as np
 import time
 from functools import lru_cache
 from queue import PriorityQueue
-
+from types import MethodType
 
 class LECMesh(object):
 
@@ -15,10 +15,11 @@ class LECMesh(object):
 
         if travel_cost_function:
             # Allow the user to define their own cost function
-            self.travel_cost_function = travel_cost_function
+            self.travel_cost_func = MethodType(travel_cost_function, self)
+            # Note the MethodType is required to properly graft this function to this instance of the LECMesh class
         else:
             # but if they don't, use the default
-            self.travel_cost_function = self.elevation_only
+            self.travel_cost_func = self.strong_elevation_change_cost
 
         if not neighbours_cache_size:
             # If no cache size was supplied, make it as big as the mesh
@@ -29,7 +30,7 @@ class LECMesh(object):
 
         # Apply a LRU cache to all the hot functions
         self.neighbours_func = lru_cache(maxsize=neighbours_cache_size)(self.graph_neighbours)
-        self.travel_cost_function = lru_cache(maxsize=other_cache_size)(self.travel_cost_function)
+        self.travel_cost_func = lru_cache(maxsize=other_cache_size)(self.travel_cost_func)
         self.dist_func = lru_cache(maxsize=other_cache_size)(self.distance)
 
 
@@ -40,9 +41,12 @@ class LECMesh(object):
         return int(np.linalg.norm(self.mesh.points[current]-self.mesh.points[_next]))
     
 
-    # We need to define a way to calculate cost
-    def elevation_only(self, current, _next):
-        # Only take into account elevation changes for costs
+
+
+    # This is the default travel cost function, which gets assigned in the constructor
+    def strong_elevation_change_cost(self, current, _next):
+        # Elevation changes contribute mostly to the calculated cost, with a much smaller
+        # fraction being the horizontal distance travelled.
         if current == _next:
             return 0
         return int(abs(self.mesh.point_data['Z'][current] - self.mesh.point_data['Z'][_next]) + self.dist_func(current, _next)*0.004)
@@ -81,7 +85,7 @@ class LECMesh(object):
             current = frontier.get()
             for _next in self.neighbours_func(current):
                 # Calculate the cost of going to this new point.
-                new_cost = cost_so_far[current] + self.travel_cost_function(current, _next)
+                new_cost = cost_so_far[current] + self.travel_cost_func(current, _next)
                 # Calculate the eulerian distance to this new point.
                 new_dist = dist_so_far[current] + self.dist_func(current, _next)
 
