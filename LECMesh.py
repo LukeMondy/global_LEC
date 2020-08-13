@@ -9,7 +9,7 @@ from types import MethodType
 
 class LECMesh(object):
 
-    def __init__(self, mesh, max_fuel = 2000, travel_cost_function = None, neighbours_cache_size = None, other_cache_size = None):
+    def __init__(self, mesh, max_fuel = 2000, travel_cost_function = None, neighbour_finding_function = None, neighbours_cache_size = None, other_cache_size = None):
         self.mesh = mesh
         self.max_fuel = max_fuel
 
@@ -21,6 +21,13 @@ class LECMesh(object):
             # but if they don't, use the default
             self.travel_cost_func = self.strong_elevation_change_cost
 
+        if neighbour_finding_function:
+            # Allow the user to define their own neighbour function
+            self.neighbours_func = MethodType(neighbour_finding_function, self)
+        else:
+            # but if they don't, use the default
+            self.neighbours_func = self.graph_neighbours
+
         if not neighbours_cache_size:
             # If no cache size was supplied, make it as big as the mesh
             neighbours_cache_size = self.mesh.point_data['Z'].shape[0]
@@ -29,7 +36,7 @@ class LECMesh(object):
             other_cache_size = neighbours_cache_size
 
         # Apply a LRU cache to all the hot functions
-        self.neighbours_func = lru_cache(maxsize=neighbours_cache_size)(self.graph_neighbours)
+        self.neighbours_func = lru_cache(maxsize=neighbours_cache_size)(self.neighbours_func)
         self.travel_cost_func = lru_cache(maxsize=other_cache_size)(self.travel_cost_func)
         self.dist_func = lru_cache(maxsize=other_cache_size)(self.distance)
 
@@ -38,9 +45,7 @@ class LECMesh(object):
         # from https://stackoverflow.com/a/1401828
         if current == _next:
             return 0
-        return int(np.linalg.norm(self.mesh.points[current]-self.mesh.points[_next]))
-    
-
+        return np.linalg.norm(self.mesh.points[current]-self.mesh.points[_next])
 
 
     # This is the default travel cost function, which gets assigned in the constructor
@@ -96,7 +101,6 @@ class LECMesh(object):
                     priority = new_cost
                     frontier.put(_next, priority)
                     came_from[_next] = current
-
         return came_from, cost_so_far, dist_so_far
 
 
